@@ -10,13 +10,19 @@ import java.util.Properties;
 public class ConnectionToDb {
 
 	private LettoreDiSettaggi lettore;
+
 	
 	public ConnectionToDb() {
 		this.lettore = new LettoreDiSettaggiImpl();
 	}
 
+
+	public void createTable() {
+	   	
+	}
 	
-	public Connection initConnection() throws SQLException {
+	
+	private Connection initConnection() throws SQLException {
 		Properties proprieta = this.lettore.carica();
 		String url = proprieta.getProperty("jacorm.db.url");
 		String username = proprieta.getProperty("jacorm.db.username");
@@ -30,9 +36,16 @@ public class ConnectionToDb {
 		if (psw == null || psw.isEmpty()) {
 			throw new IllegalStateException("Manca jacorm.db.password in application.properties");
 		}
-		return DriverManager.getConnection(url, username, psw);
+		try {
+			return DriverManager.getConnection(url, username, psw);
+		} catch (SQLException e) {
+			if ("3D000".equals(e.getSQLState())) {
+				throw new SQLException("Database non esistente: controlla jacorm.db.url", e);
+			}
+			throw e;
+		}
 	}
-	
-	
-	
+
+
+
 }
