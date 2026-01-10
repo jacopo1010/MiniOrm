@@ -1,7 +1,8 @@
 package com.miniorm.prova.database;
 
 import com.miniorm.prova.configurazioni.LettoreDiSettaggi;
-import com.miniorm.prova.configurazioni.LettoreDiSettaggiImpl;
+import com.miniorm.prova.configurazioni.LettoreSingleton;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,16 +14,11 @@ public class ConnectionToDb {
 
 	
 	public ConnectionToDb() {
-		this.lettore = new LettoreDiSettaggiImpl();
-	}
-
-
-	public void createTable() {
-	   	
+		this.lettore = LettoreSingleton.getLettoreDiSettaggiImpl();
 	}
 	
 	
-	private Connection initConnection() throws SQLException {
+	public Connection initConnection() throws SQLException {
 		Properties proprieta = this.lettore.carica();
 		String url = proprieta.getProperty("jacorm.db.url");
 		String username = proprieta.getProperty("jacorm.db.username");

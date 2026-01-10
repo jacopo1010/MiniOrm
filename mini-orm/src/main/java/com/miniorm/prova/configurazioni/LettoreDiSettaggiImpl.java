@@ -17,6 +17,7 @@ public class LettoreDiSettaggiImpl implements LettoreDiSettaggi {
 	@Override
 	public Properties carica() {
 		Properties properties = new Properties();
+		// Nota: questo carica solo da classpath (dentro JAR o risorse), non da file esterni.
 		try (InputStream in = getClass().getClassLoader().getResourceAsStream(resourceName)) {
 			if (in == null) {
 				throw new IllegalStateException("File config non trovato: " + resourceName);
