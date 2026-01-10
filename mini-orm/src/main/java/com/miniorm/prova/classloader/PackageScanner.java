@@ -52,18 +52,18 @@ public class PackageScanner implements ScansionaProgetto{
 					Path root = Paths.get(url.toURI());
 					try (java.util.stream.Stream<Path> stream = Files.walk(root)) {
 						stream.filter(Files::isRegularFile)
-						  .filter(p -> p.toString().endsWith(".class"))
-						  .forEach(p -> {
-								  String pathStr = p.toString();
-								  int idx = pathStr.indexOf(packagePath);
-								  if (idx < 0) {
-									  return;
-								  }
-								  String className = pathStr
-										  .substring(idx)
-										  .replace('\\', '.')
-										  .replace('/', '.')
-										  .replace(".class", "");
+						.filter(p -> p.toString().endsWith(".class"))
+						.forEach(p -> {
+							String pathStr = p.toString();
+							int idx = pathStr.indexOf(packagePath);
+							if (idx < 0) {
+								return;
+							}
+							String className = pathStr
+									.substring(idx)
+									.replace('\\', '.')
+									.replace('/', '.')
+									.replace(".class", "");
 							if (!className.contains("$")) {
 								try {
 									Class<?> clazz = Class.forName(className, false, cl);
@@ -107,7 +107,9 @@ public class PackageScanner implements ScansionaProgetto{
 	}
 
 
-
+	public LettoreDiSettaggi getLettoreDiSettaggi() {
+		return this.lettore;
+	}
 
 
 }
